@@ -18,11 +18,18 @@ Start a tinker session:
 Execute the following code line by line (excluding the comments obviously):
 ```php
 # Set up utilities
-$roleUserId = ['role_id' => 1, 'user_id' => 1];
+$firstUserAdminRole = ['role_id' => 1, 'user_id' => 1];
 $comment = fn (string $comment) => ['comment' => $comment];
 
 # This is the same comment as it is currently existing
-RoleUser::updateOrCreate($roleUserId, $comment('Give role Admin to user User'));
+RoleUser::updateOrCreate($firstUserAdminRole, $comment('Give role Admin to user First'));
 # This is a different comment requiring an actual update
-RoleUser::updateOrCreate($roleUserId, $comment('Something else'));
+RoleUser::updateOrCreate($firstUserAdminRole, $comment('Something else'));
+
+# Make sure it's not depending on the specific foreign keys
+$secondUserModeratorRole = ['role_id' => 2, 'user_id' => 2];
+# This is the same comment as it is currently existing
+RoleUser::updateOrCreate($secondUserModeratorRole, $comment('Give role Moderator to user Second'));
+# This is a different comment requiring an actual update
+RoleUser::updateOrCreate($secondUserModeratorRole, $comment('Something else'));
 ```

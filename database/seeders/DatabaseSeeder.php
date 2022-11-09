@@ -18,23 +18,39 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::firstOrCreate([
-            'email' => 'user@example.com',
+        $firstUser = User::firstOrCreate([
+            'email' => 'first@example.com',
         ],[
-            'name' => 'User',
+            'name' => 'First',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => 'ABCDEFGHIK',
+        ]);
+        $secondUser = User::firstOrCreate([
+            'email' => 'second@example.com',
+        ],[
+            'name' => 'Second',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => 'ABCDEFGHIK',
         ]);
 
-        $role = Role::firstOrCreate([
+        $adminRole = Role::firstOrCreate([
             'name' => 'Admin',
+        ]);
+        $moderatorRole = Role::firstOrCreate([
+            'name' => 'Moderator',
         ]);
 
         RoleUser::firstOrCreate([
-            'role_id' => $role->id,
-            'user_id' => $user->id,
-            'comment' => 'Give role Admin to user User',
+            'role_id' => $adminRole->id,
+            'user_id' => $firstUser->id,
+            'comment' => 'Give role Admin to user First',
+        ]);
+        RoleUser::firstOrCreate([
+            'role_id' => $moderatorRole->id,
+            'user_id' => $secondUser->id,
+            'comment' => 'Give role Moderator to user Second',
         ]);
     }
 }
